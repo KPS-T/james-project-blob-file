@@ -19,7 +19,7 @@
 
 package org.apache.james.protocols.smtp.core.fastfail;
 
-import static org.apache.james.protocols.api.ProtocolSession.State.Transaction;
+import static org.apache.james.protocols.api.ProtocolSession.State.Connection;
 import static org.apache.james.protocols.smtp.core.fastfail.ResolvableEhloHeloHandler.BAD_EHLO_HELO;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -133,7 +133,7 @@ public class ResolvableEhloHeloHandlerTest {
         ResolvableEhloHeloHandler handler = createHandler();
         
         handler.doHelo(session, INVALID_HOST);
-        assertThat(session.getAttachment(BAD_EHLO_HELO, Transaction)).withFailMessage("Invalid HELO").isPresent();
+        assertThat(session.getAttachment(BAD_EHLO_HELO, Connection)).withFailMessage("Invalid HELO").isPresent();
 
         HookReturnCode result = handler.doMail(session, MaybeSender.nullSender()).getResult();
         assertThat(HookReturnCode.deny()).describedAs("Reject").isEqualTo(result);
@@ -146,7 +146,7 @@ public class ResolvableEhloHeloHandlerTest {
 
   
         handler.doHelo(session, VALID_HOST);
-        assertThat(session.getAttachment(BAD_EHLO_HELO, Transaction)).withFailMessage("Valid HELO").isEmpty();
+        assertThat(session.getAttachment(BAD_EHLO_HELO, Connection)).withFailMessage("Valid HELO").isEmpty();
 
         HookReturnCode result = handler.doMail(session, MaybeSender.nullSender()).getResult();
         assertThat(HookReturnCode.declined()).describedAs("Not reject").isEqualTo(result);
@@ -159,7 +159,7 @@ public class ResolvableEhloHeloHandlerTest {
 
 
         handler.doHelo(session, INVALID_HOST);
-        assertThat(session.getAttachment(BAD_EHLO_HELO, Transaction)).withFailMessage("Value stored").isPresent();
+        assertThat(session.getAttachment(BAD_EHLO_HELO, Connection)).withFailMessage("Value stored").isPresent();
 
 
         HookReturnCode result = handler.doMail(session, MaybeSender.nullSender()).getResult();
@@ -174,7 +174,7 @@ public class ResolvableEhloHeloHandlerTest {
 
 
         handler.doHelo(session, INVALID_HOST);
-        assertThat(session.getAttachment(BAD_EHLO_HELO, Transaction)).withFailMessage("Value stored").isPresent();
+        assertThat(session.getAttachment(BAD_EHLO_HELO, Connection)).withFailMessage("Value stored").isPresent();
 
 
         HookReturnCode result = handler.doMail(session, MaybeSender.nullSender()).getResult();

@@ -66,13 +66,15 @@ public class SMTPSessionImpl extends ProtocolSessionImpl implements SMTPSession 
 
     @Override
     public void resetState() {
-        // remember the ehlo mode between resets
+        // remember the ehlo mode and name between resets
         Optional<String> currentHeloMode = getAttachment(CURRENT_HELO_MODE, State.Connection);
+        Optional<String> currentHeloName = getAttachment(CURRENT_HELO_NAME, State.Connection);
 
         getState().clear();
 
-        // start again with the old helo mode
+        // start again with the old helo mode and name
         currentHeloMode.ifPresent(heloMode -> setAttachment(CURRENT_HELO_MODE, heloMode, State.Connection));
+        currentHeloName.ifPresent(heloName -> setAttachment(CURRENT_HELO_NAME, heloName, State.Connection));
 
         currentMessageSize = 0L;
         headerComplete = false;
